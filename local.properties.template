@@ -1,0 +1,21 @@
+# ============================================================
+# 🌸 Doctor Laasya — local.properties
+# Add your API keys here. NEVER commit this file to Git.
+# ============================================================
+
+# Gemini 2.0 Flash API Key
+# Get from: https://aistudio.google.com/
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# ElevenLabs — Doctor Laasya voice
+# 1. Go to: https://elevenlabs.io/voice-lab
+# 2. Create a voice with: Female / Young Adult / Indian Telugu / Style 15%
+# 3. Copy the Voice ID here
+ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
+ELEVENLABS_VOICE_ID=your_laasya_voice_id_here
+
+# Porcupine Wake Word ("హే లాస్యా")
+# 1. Go to: https://console.picovoice.ai/
+# 2. Create custom wake word: "Hey Laasya" in Telugu accent
+# 3. Download .ppn file → place in app/src/main/assets/hey_laasya_telugu.ppn
+PORCUPINE_ACCESS_KEY=your_porcupine_key_here

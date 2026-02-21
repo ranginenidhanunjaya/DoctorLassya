@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 🌸 Doctor Laasya Brand Colors -->
+    <color name="laasya_pink_primary">#E91E8C</color>
+    <color name="laasya_pink_dark">#C2185B</color>
+    <color name="laasya_pink_light">#F48FB1</color>
+    <color name="laasya_blush_white">#FFF8F9</color>
+    <color name="laasya_green">#4CAF50</color>
+    <color name="laasya_emergency_red">#D32F2F</color>
+    <color name="laasya_text_primary">#212121</color>
+    <color name="laasya_text_secondary">#757575</color>
+
+    <!-- Splash screen -->
+    <color name="splash_background">#E91E8C</color>
+</resources>

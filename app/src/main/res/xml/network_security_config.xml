@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <!-- Gemini API -->
+        <domain includeSubdomains="true">generativelanguage.googleapis.com</domain>
+        <!-- ElevenLabs TTS -->
+        <domain includeSubdomains="true">api.elevenlabs.io</domain>
+    </domain-config>
+</network-security-config>
