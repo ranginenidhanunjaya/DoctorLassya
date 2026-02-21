@@ -13,9 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ─── 1. Checkout code ───────────────────────────────
       - name: 📥 Checkout Repository
         uses: actions/checkout@v4
 
+      # ─── 2. Setup Java 17 ───────────────────────────────
       - name: ☕ Setup JDK 17
         uses: actions/setup-java@v4
         with:
@@ -23,32 +25,51 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      # ─── 3. Setup Android SDK ───────────────────────────
       - name: 🤖 Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: 🔑 Make Gradlew Executable
-        run: chmod +x ./gradlew
+      # ─── 4. Install Gradle & Generate gradlew ───────────
+      # This fixes "gradlew not found" error automatically!
+      - name: 🔧 Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
 
-      # ✅ Keys లేకుండా build అవుతుంది — empty values use చేస్తాం
-      - name: 🔐 Create local.properties (No keys needed)
+      - name: 📝 Generate Gradle Wrapper (if missing)
+        run: |
+          if [ ! -f "./gradlew" ]; then
+            echo "gradlew not found — generating now..."
+            gradle wrapper --gradle-version=8.10.2
+            chmod +x ./gradlew
+            echo "✅ gradlew generated!"
+          else
+            chmod +x ./gradlew
+            echo "✅ gradlew exists!"
+          fi
+
+      # ─── 5. Create local.properties ─────────────────────
+      - name: 🔐 Create local.properties
         run: |
           echo "GEMINI_API_KEY=placeholder_add_later" >> local.properties
           echo "ELEVENLABS_API_KEY=placeholder_add_later" >> local.properties
           echo "ELEVENLABS_VOICE_ID=placeholder_add_later" >> local.properties
           echo "PORCUPINE_ACCESS_KEY=placeholder_add_later" >> local.properties
+          echo "sdk.dir=$ANDROID_HOME" >> local.properties
 
+      # ─── 6. Build Debug APK ─────────────────────────────
       - name: 🏗️ Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
 
-      - name: 📤 Upload APK — Click Here to Download!
+      # ─── 7. Upload APK ──────────────────────────────────
+      - name: 📤 Upload APK — Click to Download!
         uses: actions/upload-artifact@v4
         with:
           name: DoctorLaasya-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
 
-      - name: 📊 APK File Info
+      - name: ✅ Build Complete
         run: |
-          echo "✅ APK Build Successful!"
-          ls -lh app/build/outputs/apk/debug/app-debug.apk
           echo "🌸 డాక్టర్ లాస్య APK Ready!"
+          ls -lh app/build/outputs/apk/debug/app-debug.apk
