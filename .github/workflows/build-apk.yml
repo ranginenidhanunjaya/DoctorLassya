@@ -5,7 +5,6 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-  # Manual trigger — click "Run workflow" button in GitHub
   workflow_dispatch:
 
 jobs:
@@ -14,11 +13,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ─── 1. Checkout code ───────────────────────────────
       - name: 📥 Checkout Repository
         uses: actions/checkout@v4
 
-      # ─── 2. Setup Java 17 ───────────────────────────────
       - name: ☕ Setup JDK 17
         uses: actions/setup-java@v4
         with:
@@ -26,39 +23,32 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      # ─── 3. Setup Android SDK ───────────────────────────
       - name: 🤖 Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      # ─── 4. Grant Gradle permissions ────────────────────
       - name: 🔑 Make Gradlew Executable
         run: chmod +x ./gradlew
 
-      # ─── 5. Inject API Keys from GitHub Secrets ─────────
-      - name: 🔐 Create local.properties with API Keys
+      # ✅ Keys లేకుండా build అవుతుంది — empty values use చేస్తాం
+      - name: 🔐 Create local.properties (No keys needed)
         run: |
-          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> local.properties
-          echo "ELEVENLABS_API_KEY=${{ secrets.ELEVENLABS_API_KEY }}" >> local.properties
-          echo "ELEVENLABS_VOICE_ID=${{ secrets.ELEVENLABS_VOICE_ID }}" >> local.properties
-          echo "PORCUPINE_ACCESS_KEY=${{ secrets.PORCUPINE_ACCESS_KEY }}" >> local.properties
+          echo "GEMINI_API_KEY=placeholder_add_later" >> local.properties
+          echo "ELEVENLABS_API_KEY=placeholder_add_later" >> local.properties
+          echo "ELEVENLABS_VOICE_ID=placeholder_add_later" >> local.properties
+          echo "PORCUPINE_ACCESS_KEY=placeholder_add_later" >> local.properties
 
-      # ─── 6. Build Debug APK ──────────────────────────────
       - name: 🏗️ Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
 
-      # ─── 7. Upload APK as downloadable artifact ──────────
       - name: 📤 Upload APK — Click Here to Download!
         uses: actions/upload-artifact@v4
         with:
           name: DoctorLaasya-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 30  # APK available for 30 days
+          retention-days: 30
 
-      # ─── 8. Show APK info ────────────────────────────────
       - name: 📊 APK File Info
         run: |
           echo "✅ APK Build Successful!"
-          echo "📦 APK Size:"
           ls -lh app/build/outputs/apk/debug/app-debug.apk
-          echo ""
-          echo "🌸 డాక్టర్ లాస్య APK Ready to Download!"
+          echo "🌸 డాక్టర్ లాస్య APK Ready!"
